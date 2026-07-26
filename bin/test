@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative "../lib/ircc"
+
+connection = Ircc::Connection.new(host: "irc.libera.chat", port: 6667)
+connection.connect
+
+client = Ircc::Client.new(connection)
+client.register(nickname: "yournick", username: "yournick", realname: "You")
+client.join("#test") # or some quiet channel
+
+loop do
+  line = client.process_next
+  break if line.nil?
+
+  puts line
+end
